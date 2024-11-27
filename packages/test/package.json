@@ -1,0 +1,13 @@
+{
+  "name": "@pupiltong/test",
+  "version": "0.0.0",
+  "private": "true",
+  "description": "",
+  "keywords": [],
+  "author": "github:pupiltong",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
