@@ -1,0 +1,42 @@
+name: check
+"on":
+  pull_request:
+    branches:
+      - main
+permissions:
+  repository-projects: read
+  contents: read
+  actions: write
+  pull-requests: write
+  statuses: read
+env:
+  CI: 1
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache-dependency-path: pnpm-lock.yaml
+      - name: Install
+        run: |
+          corepack enable && corepack prepare
+          corepack pnpm install --frozen-lockfile
+      - name: check code style
+        run: |
+          pnpm dprint check
+      - name: PR Conventional Commit Validation
+        uses: ytanikin/PRConventionalCommits@1.2.0
+        with:
+          task_types: '["feat","fix","docs","test","refactor","chore","revert"]'
+          add_label: "false"
+      - name: build
+        run: |
+          corepack pnpm build
