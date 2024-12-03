@@ -49,11 +49,10 @@ importers:
   packages/rpc: {}
 
   packages/test:
-    dependencies:
+    devDependencies:
       '@playwright/test':
         specifier: ^1.49.0
         version: 1.49.0
-    devDependencies:
       '@pupiltong/rpc':
         specifier: workspace:*
         version: link:../rpc
