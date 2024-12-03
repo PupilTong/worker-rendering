@@ -40,3 +40,6 @@ jobs:
       - name: build
         run: |
           corepack pnpm build
+      - name: test
+        run: |
+          corepack pnpm test
