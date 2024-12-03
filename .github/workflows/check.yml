@@ -40,6 +40,8 @@ jobs:
       - name: build
         run: |
           corepack pnpm build
+      - name: Install playwright browsers
+        run: corepack pnpx playwright install --with-deps
       - name: test
         run: |
           corepack pnpm test
