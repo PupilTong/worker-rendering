@@ -108,19 +108,19 @@
     },
     "references": [
       {
-        "path": "packages/rpc"
+        "path": "./packages/rpc"
       },
       {
-        "path": "packages/common"
+        "path": "./packages/common"
       },
       {
-        "path": "packages/main-thread"
+        "path": "./packages/main-thread"
       },
       {
-        "path": "packages/worker-thread"
+        "path": "./packages/worker-thread"
       },
       {
-        "path": "packages/test"
+        "path": "./packages/test"
       },
     ],
     "include": []
