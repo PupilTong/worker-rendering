@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rsbuild build",
-    "prepare": "playwright install",
+    "prepare": "playwright install --with-deps",
     "serve": "rsbuild dev",
     "test": "playwright test",
     "test:debug": "playwright test --ui"
