@@ -20,11 +20,40 @@ export interface RpcEndpointBase<
   IsSync extends boolean,
   HasReturn extends boolean,
 > {
+  /**
+   * The name of this rpc endpoint.
+   * Rpc instance use this name to recognize which callback to call.
+   * Keep in mind: this should be unique.
+   * @public
+   */
   readonly name: string;
+  /**
+   * @private
+   * make typescript happy
+   */
   readonly _TypeParameters: Parameters;
+  /**
+   * @private
+   * make typescript happy
+   */
   readonly _TypeReturn: Return;
+  /**
+   * @public
+   * if this endpoint has return value.
+   * Only valid for sync endpoints.
+   * Always true for async endpoints.
+   */
   readonly hasReturn: HasReturn;
+  /**
+   * @public
+   * the call is a async call or not
+   */
   readonly isSync: IsSync;
+  /**
+   * The byte size for return value buffer.
+   * The return value will be encoded to json string in utf-8
+   * So you should ensure this size is enough for your stringified return value.
+   */
   readonly bufferSize: never | number;
 }
 
