@@ -38,14 +38,23 @@ export class Rpc {
     (...args: any[]) => unknown | Promise<unknown>
   >();
 
+  /**
+   * @param port one size of a message channel
+   * @param name instance name
+   */
   constructor(private port: MessagePort, private name: string) {
-    port.onmessage = this.onMessage;
+    port.onmessage = this.#onMessage;
   }
   get nextRetId() {
     return `ret_${this.name}_${this.incId++}`;
   }
 
-  static createRetEndpoint<Return>(retId: string): RetEndpoint<Return> {
+  /**
+   * @private do not use this
+   * @param retId
+   * @returns
+   */
+  private static createRetEndpoint<Return>(retId: string): RetEndpoint<Return> {
     return {
       name: retId,
       hasReturn: false,
@@ -53,7 +62,7 @@ export class Rpc {
     } as unknown as RetEndpoint<Return>;
   }
 
-  onMessage: (ev: MessageEvent) => void = async (ev) => {
+  #onMessage: (ev: MessageEvent) => void = async (ev) => {
     const message = ev.data as RpcMessageData | RpcMessageDataSync;
     if (globalThis.__RPC_DEBUG_MODE) {
       console.warn(`[rpc] ${this.name} received ${message.name}`, message);
@@ -109,6 +118,10 @@ export class Rpc {
     }
   };
 
+  /**
+   * initialize a endpoint into a function
+   * @param endpoint
+   */
   createCall<E extends RpcEndpointSync<unknown[], unknown>>(
     endpoint: E,
   ): (...args: E['_TypeParameters']) => E['_TypeReturn'];
@@ -128,6 +141,11 @@ export class Rpc {
     };
   }
 
+  /**
+   * register a handler for an endpoint
+   * @param endpoint
+   * @param handler
+   */
   registerHandler<T extends RetEndpoint<any>>(
     endpoint: T,
     handler: (...args: T['_TypeParameters']) => void,
@@ -147,6 +165,12 @@ export class Rpc {
     this.#handlerMap.set(endpoint.name, handler);
   }
 
+  /**
+   * the low level api for sending a rpc message
+   * recommend to use the `createCall`
+   * @param endpoint
+   * @param parameters
+   */
   invoke<T extends RetEndpoint<unknown>>(
     endpoint: T,
     parameters: T['_TypeParameters'],
